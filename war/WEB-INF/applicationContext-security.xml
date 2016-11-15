@@ -1,0 +1,39 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.xsd">
+
+	<http auto-config='true' >
+		<intercept-url pattern="/register.html*" access="ROLE_ANONYMOUS"/>
+	    <intercept-url pattern="/index.html*" access="ROLE_USER,ROLE_ANONYMOUS"/>
+	    <intercept-url pattern="/feed.html*" access="ROLE_USER,ROLE_FEED_OWNER" />  
+	    
+	    <intercept-url pattern="/feed/read.json*" access="ROLE_USER,ROLE_ENTRY_OWNER" />  
+	    <intercept-url pattern="/feed/unread.json*" access="ROLE_USER,ROLE_ENTRY_OWNER" />
+	    <intercept-url pattern="/feed/readAll.json*" access="ROLE_USER,ROLE_FEED_OWNER" />  
+	    <intercept-url pattern="/feed/unreadAll.json*" access="ROLE_USER,ROLE_FEED_OWNER" />
+	    	      
+	    <intercept-url pattern="/*.html" access="ROLE_USER" />
+    	<form-login login-page="/index.html" login-processing-url="/login.html" authentication-failure-url="/index.html?loginFailure=1"/>
+    	<logout logout-url="/logout.html"/>
+	</http>
+
+	<authentication-provider user-service-ref="userService" />
+	
+	<global-method-security access-decision-manager-ref="accessDecisionManager" />
+	
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:ref bean="roleVoter"/>
+				<beans:ref bean="feedOwnerVoter"/>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="roleVoter" class="org.springframework.security.vote.RoleVoter"/>
+	
+	<beans:bean id="feedOwnerVoter" class="by.rss.reader.web.security.FeedOwnerVoter"/>
+</beans:beans>

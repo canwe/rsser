@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<context:component-scan base-package="by.rss.reader.web" />
+
+	<!-- Controller -->
+	<bean class="by.rss.reader.web.controller.RegisterController">
+		<property name="commandName" value="user" />
+		<property name="commandClass" value="by.rss.reader.model.User" />
+		<property name="formView" value="register" />
+		<property name="successView" value="register-success" />
+		<property name="validator" ref="ovalValidator" />
+	</bean>
+
+	<bean class="by.rss.reader.web.controller.SubscribeController">
+		<property name="commandName" value="feed" />
+		<property name="commandClass" value="by.rss.reader.model.Feed" />
+		<property name="formView" value="subscribe" />
+		<property name="validators">
+			<list>
+				<bean class="by.rss.reader.web.validator.OvalValidator">
+			    	<property name="validator">
+			    		<bean class="net.sf.oval.Validator" />
+			    	</property>
+			    	<property name="profile">
+			    		<util:constant static-field="by.rss.reader.web.validator.profiles.Profiles.SUBSCRIBE"/>
+			    	</property>
+			    </bean>
+			    <bean class="by.rss.reader.web.validator.SubscribeValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Validator -->
+	<bean id="ovalValidator" class="net.sf.oval.integration.spring.SpringValidator">
+    	<property name="validator">
+    		<bean class="net.sf.oval.Validator" />
+    	</property>
+    </bean>
+	
+	<!-- Messages -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages"/>
+  		<property name="useCodeAsDefaultMessage" value="true"/>
+	</bean>
+
+	<!-- FreeMarker -->
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="default_encoding">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="viewResolverFM" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+        <!--property name="prefix" value="/rsser/" /-->
+        <property name="suffix" value=".ftl" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="contentType" value="text/html; charset=utf-8" />
+	</bean>
+	
+</beans>
