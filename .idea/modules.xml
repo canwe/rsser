@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/reader.iml" filepath="$PROJECT_DIR$/reader.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rsstoread.iml" filepath="$PROJECT_DIR$/rsstoread.iml" />
     </modules>
   </component>
 </project>
