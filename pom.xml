@@ -15,6 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <datanucleus.version>3.1.4</datanucleus.version>
+        <appengine.version>1.9.84</appengine.version>
         <spring.version>3.1.0.RELEASE</spring.version>
         <spring.security.version>2.0.1</spring.security.version>
         <rome.version>1.5.0</rome.version>
@@ -187,7 +188,7 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.9.10</version>
+            <version>${appengine.version}</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.google.appengine</groupId>-->
@@ -197,25 +198,25 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-testing</artifactId>
-            <version>1.9.10</version>
+            <version>${appengine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-labs</artifactId>
-            <version>1.9.10</version>
+            <version>${appengine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-stubs</artifactId>
-            <version>1.9.10</version>
+            <version>${appengine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-jsr107cache</artifactId>
-            <version>1.9.10</version>
+            <version>${appengine.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jsr107cache</groupId>
@@ -389,7 +390,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.84</version>
+                <version>${appengine.version}</version>
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
                     <!--<version>${app.version}</version>-->
