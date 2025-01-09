@@ -18,7 +18,7 @@
         <appengine.version>1.9.84</appengine.version>
         <spring.version>3.1.0.RELEASE</spring.version>
         <spring.security.version>2.0.1</spring.security.version>
-        <rome.version>1.5.0</rome.version>
+        <rome.version>2.1.0</rome.version>
         <ftl.version>2.3.31</ftl.version>
         <servlet.version>2.4</servlet.version>
         <oval.version>1.20</oval.version>
@@ -30,12 +30,6 @@
 
 
         <!-- RSS -->
-        <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome-fetcher</artifactId>
-            <version>${rome.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
