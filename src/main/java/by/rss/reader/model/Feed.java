@@ -147,9 +147,16 @@ public class Feed {
 		
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "id=" + id + ", title=" + title;
+		return "Feed{" +
+				"id=" + id +
+				", url='" + url + '\'' +
+				", feedUrl='" + feedUrl + '\'' +
+				", title=" + title +
+				", description=" + description +
+				", lastUpdate=" + lastUpdate +
+				'}';
 	}
 }

@@ -42,7 +42,7 @@
 
 					<ul class="bottom">
 						<li>
-                     <a href="/unread.html">New entries (${unreadEntries})</a>
+                     <a href="/unread.html">New entries (${unreadEntries!0})</a>
 						</li>
 						<li>
 							<a href="/feeds.html">View subscriptions</a>

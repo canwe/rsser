@@ -26,6 +26,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
 
+import static org.apache.commons.lang.StringUtils.defaultString;
+
 @Service("feedService")
 @Transactional
 public class FeedServiceImpl implements FeedService {
@@ -62,6 +64,7 @@ public class FeedServiceImpl implements FeedService {
 			feed.setTitle(new Text(remoteFeed.getTitle()));
 			feed.setFeedUrl(url);
 			feed.setUrl(remoteFeed.getUrl());
+			//logger.debug(feed.toString());
 			feed = feedDAO.save(feed);
 			
 			if (logger.isDebugEnabled()) {
@@ -75,7 +78,8 @@ public class FeedServiceImpl implements FeedService {
 					logger.debug("Retrieved entry from feed from [title=" + feed.getTitle() + "] - [title=" + remoteEntry.getTitle() + "], [url="
 							+ remoteEntry.getUrl() + "]");
 				}
-				
+
+				// logger.debug(entry.toString());
 				entry = entryDAO.save(entry);
 				feedEntryDAO.save(feed, entry);
 			}
@@ -110,8 +114,8 @@ public class FeedServiceImpl implements FeedService {
 		Entry entry = new Entry();
 		
 		entry.setDate(remoteEntry.getDate());
-		entry.setDescription(new Text(remoteEntry.getDescription()));
-		entry.setTitle(new Text(remoteEntry.getTitle()));
+		entry.setDescription(new Text(defaultString(remoteEntry.getDescription(), "")));
+		entry.setTitle(new Text(defaultString(remoteEntry.getTitle(), "")));
 		entry.setUrl(remoteEntry.getUrl());
 		
 		return entry;
