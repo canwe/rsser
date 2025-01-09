@@ -1,12 +1,5 @@
 package by.rss.reader.dao.rome;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import org.springframework.stereotype.Repository;
-
 import by.rss.reader.dao.RemoteFeedDAO;
 import by.rss.reader.exception.InvalidFeedException;
 import by.rss.reader.model.RemoteEntry;
@@ -14,10 +7,18 @@ import by.rss.reader.model.RemoteFeed;
 import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.fetcher.FeedFetcher;
-import com.rometools.fetcher.FetcherException;
-import com.rometools.fetcher.impl.HttpURLFeedFetcher;
 import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedInput;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Repository;
+import org.xml.sax.InputSource;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import static org.apache.commons.lang.StringUtils.defaultString;
 
 @Repository("remoteFeedDAO")
 public class RomeRemoteFeedDAO implements RemoteFeedDAO {
@@ -30,20 +31,18 @@ public class RomeRemoteFeedDAO implements RemoteFeedDAO {
 		return null;
 	}
 
-	public RemoteFeed fetch(String url) throws InvalidFeedException {
-		FeedFetcher feedFetcher = new HttpURLFeedFetcher();
-		feedFetcher.setUsingDeltaEncoding(true);
-		
+	public RemoteFeed fetch(final String url) throws InvalidFeedException {
 		RemoteFeed remoteFeed = new RemoteFeed();
 		
 		try {
-			SyndFeed feed = feedFetcher.retrieveFeed(new URL(url));
+			SyndFeedInput syndInput = new SyndFeedInput();
+			SyndFeed feed = syndInput.build(new InputSource(new URL(url).openStream()));
 			
-			remoteFeed.setUrl(feed.getLink());
-			remoteFeed.setTitle(feed.getTitle());
-			remoteFeed.setDescription(feed.getDescription());
+			remoteFeed.setUrl(defaultString(feed.getLink(), url));
+			remoteFeed.setTitle(defaultString(feed.getTitle(), ""));
+			remoteFeed.setDescription(defaultString(feed.getDescription(), ""));
 
-			remoteFeed.setEntries(new ArrayList<RemoteEntry>());
+			remoteFeed.setEntries(new ArrayList<>());
 			
 			for (Object o : feed.getEntries()) {
 				SyndEntry entry = (SyndEntry) o;
@@ -64,8 +63,6 @@ public class RomeRemoteFeedDAO implements RemoteFeedDAO {
 			throw new InvalidFeedException("Cannot retrieve", e);
 		} catch (FeedException e) {
 			throw new InvalidFeedException("Cannot prepare feed", e);
-		} catch (FetcherException e) {
-			throw new InvalidFeedException("Cannot fetch", e);
 		}
 	}
 
