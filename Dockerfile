@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.3.9-jdk-8-alpine
+FROM csanchez/maven:3.9.9-azulzulu-8-alpine
 COPY src /home/app/src
 COPY entrypoint.sh /entrypoint.sh
 COPY pom.xml /home/app/pom.xml
